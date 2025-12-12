@@ -3,75 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thrift The Future | Premium Mobile</title>
+    <title>Thrift The Future | Final Fixed</title>
     <style>
         /* --- 1. RESET & VARIABLES --- */
         :root {
-            --primary: #111;
-            --inverse: #fff;
-            --accent: #c9a227; /* Gold */
-            --bg-body: #f8f8f8;
-            --bg-card: #fff;
-            --bg-nav: #fff;
-            --text-main: #222;
-            --text-sub: #666;
+            --primary: #1a1a1a;
+            --inverse: #ffffff;
+            --accent: #d4af37; /* Gold */
+            --bg-body: #f5f5f5;
+            --bg-card: #ffffff;
+            --bg-nav: #ffffff;
+            --text-main: #333333;
+            --text-sub: #666666;
             --border: #e0e0e0;
-            --shadow: 0 4px 12px rgba(0,0,0,0.05);
+            --shadow: 0 8px 30px rgba(0,0,0,0.08);
             --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             --font-serif: 'Playfair Display', 'Georgia', serif;
         }
 
         body.dark-mode {
-            --primary: #fff;
+            --primary: #ffffff;
             --inverse: #121212;
-            --accent: #d4af37;
-            --bg-body: #0f0f0f;
-            --bg-card: #1a1a1a;
-            --bg-nav: #141414;
+            --accent: #e0c060;
+            --bg-body: #121212;
+            --bg-card: #1e1e1e;
+            --bg-nav: #181818;
             --text-main: #e0e0e0;
             --text-sub: #a0a0a0;
-            --border: #333;
-            --shadow: 0 4px 20px rgba(0,0,0,0.4);
+            --border: #333333;
+            --shadow: 0 8px 30px rgba(0,0,0,0.5);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
         body { background: var(--bg-body); color: var(--text-main); overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; transition: 0.3s; }
-        a { text-decoration: none; color: inherit; transition: 0.3s; cursor: pointer; }
+        a { text-decoration: none; color: inherit; cursor: pointer; }
         ul { list-style: none; }
         img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        button { cursor: pointer; border: none; outline: none; }
+        button { cursor: pointer; border: none; outline: none; -webkit-tap-highlight-color: transparent; }
 
         /* --- 2. GLOBAL STYLES --- */
-        .btn { padding: 14px 30px; background: var(--primary); color: var(--inverse); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .btn { 
+            padding: 14px 28px; background: var(--primary); color: var(--inverse); 
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px; 
+            transition: 0.2s; border-radius: 4px; font-size: 0.9rem;
+        }
         .btn:hover { background: var(--accent); color: #000; transform: translateY(-2px); }
         
-        .container { padding: 40px 5%; max-width: 1400px; margin: 0 auto; }
-        .section-title { text-align: center; margin-bottom: 40px; font-family: var(--font-serif); font-size: 2.5rem; color: var(--primary); }
+        .container { padding: 40px 5%; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; margin-bottom: 40px; font-family: var(--font-serif); font-size: 2.2rem; color: var(--primary); }
         
-        .page { display: none; opacity: 0; transition: opacity 0.5s ease; }
-        .page.active { display: block; opacity: 1; }
+        .page { display: none; animation: fadeIn 0.4s ease-out forwards; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- 3. WATERMARK OVERLAY --- */
-        .watermark-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; pointer-events: none; opacity: 0.03;
-            display: flex; flex-wrap: wrap; overflow: hidden;
-            transform: rotate(-30deg) scale(1.5);
+        /* --- 3. NAV & HEADER --- */
+        .notification-bar { background: var(--primary); color: var(--inverse); text-align: center; padding: 10px; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; z-index: 1002; position: relative; }
+        
+        nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 5%; background: var(--bg-nav); position: sticky; 
+            top: 0; z-index: 1001; border-bottom: 1px solid var(--border); 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
         }
-        .watermark-text {
-            font-size: 4rem; font-weight: 900; text-transform: uppercase;
-            color: #000; margin: 50px; white-space: nowrap;
-        }
-        body.dark-mode .watermark-text { color: #fff; }
-
-        /* --- 4. NAV & HEADER --- */
-        .notification-bar { background: var(--primary); color: var(--inverse); text-align: center; padding: 10px; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; z-index: 1001; position: relative;}
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--bg-nav); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); transition: 0.3s; }
         
         .brand-logo { 
-            font-family: var(--font-serif); font-size: 1.8rem; font-weight: 900; 
+            font-family: var(--font-serif); font-size: 1.4rem; font-weight: 900; 
             text-transform: uppercase; border: 2px solid var(--primary); 
-            padding: 5px 15px; color: var(--primary); transition: 0.3s;
+            padding: 6px 14px; color: var(--primary); 
         }
         .brand-logo span { color: var(--accent); font-style: italic; }
         
@@ -79,134 +77,167 @@
         .nav-links li a { font-weight: 600; font-size: 0.9rem; text-transform: uppercase; }
         .nav-links li a:hover { color: var(--accent); }
         
-        .nav-icons { display: flex; gap: 20px; align-items: center; }
-        .icon-btn { background: none; font-size: 1.3rem; color: var(--primary); position: relative; transition: 0.3s; padding: 5px; }
-        .cart-count { position: absolute; top: -5px; right: -8px; background: var(--accent); color: #000; font-size: 0.7rem; width: 18px; height: 18px; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+        .nav-icons { display: flex; gap: 15px; align-items: center; }
+        .icon-btn { background: none; font-size: 1.5rem; color: var(--primary); position: relative; padding: 5px; }
+        .cart-count { 
+            position: absolute; top: 0; right: 0; background: var(--accent); 
+            color: #000; font-size: 0.7rem; width: 18px; height: 18px; 
+            border-radius: 50%; font-weight: bold; display: flex; 
+            align-items: center; justify-content: center; 
+        }
 
-        /* Hamburger (Visible on Mobile) */
-        .hamburger { display: none; font-size: 1.5rem; background: none; color: var(--primary); cursor: pointer; padding: 5px; }
-
-        /* --- 5. MOBILE MENU OVERLAY --- */
+        /* Mobile Menu */
+        .hamburger { display: none; font-size: 1.8rem; background: none; color: var(--primary); padding: 5px; }
         .mobile-menu {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-nav); z-index: 2002;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transform: translateY(-100%); transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            transform: translateY(-100%); transition: 0.3s ease-in-out;
         }
         .mobile-menu.open { transform: translateY(0); }
-        
-        .mobile-link { 
-            font-size: 2rem; font-family: var(--font-serif); font-weight: bold; 
-            margin: 15px 0; color: var(--primary); opacity: 0; transform: translateY(20px); transition: 0.4s; 
-        }
-        .mobile-menu.open .mobile-link { opacity: 1; transform: translateY(0); }
-        
-        .close-menu { position: absolute; top: 20px; right: 20px; font-size: 2rem; color: var(--primary); cursor: pointer; }
+        .mobile-link { font-size: 1.8rem; font-family: var(--font-serif); font-weight: bold; margin: 15px 0; color: var(--primary); }
+        .close-menu { position: absolute; top: 20px; right: 20px; font-size: 2.5rem; color: var(--primary); }
 
-        /* --- 6. GRID & CARDS --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; position: relative; z-index: 1;}
+        /* --- 4. PRODUCT GRID --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
         .card { 
-            background: var(--bg-card); cursor: pointer; transition: 0.3s; 
-            border: 1px solid transparent; opacity: 0; animation: fadeUp 0.8s forwards;
+            background: var(--bg-card); border-radius: 8px; overflow: hidden; 
+            transition: 0.3s; border: 1px solid transparent; 
+            box-shadow: var(--shadow);
         }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: var(--border); }
-        .card-img { height: 320px; overflow: hidden; background: #eee; position: relative; }
-        .card:hover .card-img img { transform: scale(1.1); transition: 0.6s ease; }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .card-img { height: 280px; overflow: hidden; background: #eee; }
+        .card:hover .card-img img { transform: scale(1.05); transition: 0.5s; }
         .card-info { padding: 15px; text-align: center; }
-        .card-title { font-size: 0.95rem; margin-bottom: 5px; color: var(--text-main); font-weight: 600; }
-        .card-price { color: var(--accent); font-weight: bold; }
+        .card-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 5px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-price { color: var(--accent); font-weight: bold; font-size: 1rem; }
 
-        /* --- 7. FOOTER --- */
-        footer { background: #0a0a0a; color: #888; padding: 60px 5% 30px; margin-top: auto; position: relative; z-index: 10; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
-        .footer-col h4 { color: #fff; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
-        .footer-col li { margin-bottom: 10px; font-size: 0.9rem; }
-        .footer-bottom { border-top: 1px solid #333; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; }
+        /* --- 5. FIXED PRODUCT PAGE (PDP) --- */
+        /* Center container, constraint width */
+        .pdp-wrapper { 
+            display: flex; gap: 40px; margin-top: 20px; 
+            background: var(--bg-card); padding: 40px; 
+            border-radius: 12px; box-shadow: var(--shadow);
+            align-items: flex-start;
+        }
 
-        /* --- 8. OTHER UI ELEMENTS --- */
-        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 50px; }
-        .page-btn { width: 40px; height: 40px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-main); display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.3s; }
-        .page-btn.active { background: var(--primary); color: var(--inverse); border-color: var(--primary); }
+        /* Smaller Image - Contained */
+        .pdp-left { 
+            flex: 0 0 400px; /* Fixed width for image container */
+            max-width: 100%;
+        }
+        .pdp-image-box {
+            width: 100%; height: 400px; /* Square aspect ratio */
+            background: #f0f0f0; border-radius: 8px; overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .pdp-image-box img { 
+            width: 100%; height: 100%; object-fit: cover; /* or contain if you prefer */
+        }
 
-        .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; display: none; }
-        .cart-sidebar { position: fixed; top: 0; right: 0; width: 100%; max-width: 400px; height: 100%; background: var(--bg-card); z-index: 2001; transform: translateX(100%); transition: 0.4s; display: flex; flex-direction: column; }
+        .pdp-right { flex: 1; }
+        
+        .pdp-title { font-family: var(--font-serif); font-size: 2rem; margin-bottom: 10px; color: var(--primary); line-height: 1.2; }
+        .pdp-price { font-size: 1.6rem; color: var(--accent); font-weight: 700; margin-bottom: 20px; }
+        .pdp-desc { line-height: 1.6; color: var(--text-sub); margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+
+        .option-row { margin-bottom: 20px; }
+        .option-label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase; color: var(--text-sub); }
+
+        /* Size Buttons */
+        .size-list { display: flex; gap: 10px; }
+        .size-btn { 
+            width: 45px; height: 45px; border: 1px solid var(--border); 
+            display: flex; align-items: center; justify-content: center; 
+            font-weight: bold; cursor: pointer; border-radius: 4px; transition: 0.2s;
+            background: var(--bg-card); color: var(--text-main);
+        }
+        .size-btn:hover { border-color: var(--primary); }
+        .size-btn.selected { background: var(--primary); color: var(--inverse); border-color: var(--primary); }
+
+        /* Quantity Buttons */
+        .qty-box { display: flex; align-items: center; border: 1px solid var(--border); width: max-content; border-radius: 4px; overflow: hidden; }
+        .qty-control { 
+            width: 40px; height: 40px; background: var(--bg-body); 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 1.2rem; cursor: pointer; user-select: none;
+            color: var(--text-main);
+        }
+        .qty-control:hover { background: #ddd; }
+        .qty-val { width: 40px; text-align: center; font-weight: bold; font-size: 1rem; color: var(--text-main); }
+
+        /* Actions */
+        .pdp-actions { margin-top: 30px; display: flex; gap: 15px; }
+
+        /* --- 6. CART SIDEBAR (FIXED) --- */
+        .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; display: none; }
+        .cart-sidebar { 
+            position: fixed; top: 0; right: 0; width: 100%; max-width: 400px; height: 100%; 
+            background: var(--bg-card); z-index: 2001; transform: translateX(100%); transition: 0.3s; 
+            display: flex; flex-direction: column; box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+        }
         .cart-active .cart-overlay { display: block; }
         .cart-active .cart-sidebar { transform: translateX(0); }
         
-        /* Pay Overlay */
+        .cart-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg-nav); }
+        .cart-list { flex: 1; overflow-y: auto; padding: 20px; }
+        
+        .cart-item { display: flex; gap: 15px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border); align-items: center; }
+        .cart-thumb { width: 70px; height: 70px; border-radius: 4px; object-fit: cover; flex-shrink: 0; background: #eee; }
+        .cart-details { flex: 1; }
+        .cart-title { font-weight: bold; font-size: 0.9rem; margin-bottom: 4px; color: var(--text-main); }
+        .cart-meta { font-size: 0.8rem; color: var(--text-sub); }
+        .cart-remove { color: #ff4d4d; font-size: 1.2rem; cursor: pointer; padding: 5px; }
+
+        .cart-footer { padding: 20px; border-top: 1px solid var(--border); background: var(--bg-nav); }
+        
+        /* --- 7. CHECKOUT & PAYMENT --- */
         .pay-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; color: white; }
-        .spinner { width: 60px; height: 60px; border: 5px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
-        .checkmark { width: 80px; height: 80px; border-radius: 50%; display: block; stroke-width: 2; stroke: #4cd137; stroke-miterlimit: 10; margin: 10% auto; box-shadow: inset 0px 0px 0px #4cd137; animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both; }
-        .checkmark__circle { stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 2; stroke-miterlimit: 10; stroke: #4cd137; fill: none; animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards; }
-        .checkmark__check { transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards; }
-        @keyframes stroke { 100% { stroke-dashoffset: 0; } }
-        @keyframes scale { 0%, 100% { transform: none; } 50% { transform: scale3d(1.1, 1.1, 1); } }
-        @keyframes fill { 100% { box-shadow: inset 0px 0px 0px 50px transparent; } }
+        .spinner { width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        /* Receipt */
-        .receipt-card { background: var(--bg-card); border: 1px solid var(--border); max-width: 600px; margin: 0 auto; padding: 40px; border-radius: 8px; text-align: left; box-shadow: var(--shadow); animation: slideUp 0.6s ease-out; }
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .receipt-header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 20px; text-align: center; }
-        .receipt-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; color: var(--text-sub); }
-        .receipt-row.bold { font-weight: bold; color: var(--text-main); font-size: 1.1rem; border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px; }
-
-        /* PDP Styles */
-        .pdp-container { display: flex; gap: 50px; margin-top: 20px; }
-        .pdp-image { flex: 1; height: 600px; background: #eee; overflow: hidden; border-radius: 8px; }
-        .pdp-details { flex: 1; padding: 10px; }
-        .size-selector { display: flex; gap: 10px; flex-wrap: wrap; }
-        .size-box { width: 50px; height: 40px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; background: var(--bg-card); }
-        .size-box.selected { background: var(--primary); color: var(--inverse); border-color: var(--primary); }
-        .payment-methods { display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap; }
-        .pay-card { border: 1px solid var(--border); padding: 15px; border-radius: 6px; cursor: pointer; flex: 1; min-width: 120px; text-align: center; background: var(--bg-card); }
-        .pay-card.selected { border-color: var(--accent); background: rgba(201, 162, 39, 0.05); }
-        input { width: 100%; padding: 12px; border: 1px solid var(--border); background: var(--bg-body); color: var(--text-main); outline: none; }
-
-        /* --- 9. RESPONSIVE --- */
+        
+        .receipt-card { background: var(--bg-card); padding: 30px; border-radius: 8px; width: 90%; max-width: 500px; text-align: left; }
+        .receipt-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-sub); }
+        .receipt-total { border-top: 1px solid var(--border); margin-top: 15px; padding-top: 15px; font-weight: bold; color: var(--text-main); font-size: 1.1rem; display: flex; justify-content: space-between; }
+        
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-body); color: var(--text-main); }
+        
+        /* --- 8. RESPONSIVE --- */
         @media(max-width: 768px) {
-            /* Mobile Nav Logic */
             .nav-links { display: none; }
             .hamburger { display: block; }
-            .brand-logo { font-size: 1.1rem; padding: 6px 10px; }
             
-            /* Buttons */
-            .nav-icons { gap: 10px; }
-            .icon-btn { font-size: 1.6rem; padding: 8px; }
+            /* Stack PDP */
+            .pdp-wrapper { flex-direction: column; padding: 20px; gap: 20px; }
+            .pdp-left { flex: auto; width: 100%; }
+            .pdp-image-box { height: 350px; margin: 0 auto; }
+            .pdp-right { width: 100%; }
 
-            /* Footer Stacking */
-            .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 30px; }
-            .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
-
-            /* Layout */
-            .pdp-container { flex-direction: column; gap: 20px; }
-            .pdp-image { height: 400px; }
-            .container { padding: 30px 5%; }
-            
-            /* Receipt Mobile */
-            .receipt-card { padding: 20px; }
+            /* Sticky Action Button on Mobile */
+            .pdp-actions { 
+                position: fixed; bottom: 0; left: 0; width: 100%; 
+                background: var(--bg-card); padding: 15px; 
+                margin: 0; border-top: 1px solid var(--border); 
+                z-index: 999; box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            }
+            .pdp-actions .btn { width: 100%; }
+            .container { padding-bottom: 80px; } /* Spacer */
         }
     </style>
 </head>
 <body>
 
-    <div class="watermark-overlay" id="watermarkContainer"></div>
-
-    <div class="notification-bar">Free Shipping Over ₹999 | Code: KUNAL10</div>
+    <div class="notification-bar">Free Shipping on Orders Over ₹999 | Code: KUNAL10</div>
 
     <nav>
         <button class="hamburger" onclick="toggleMenu()">☰</button>
-
         <div class="brand-logo" onclick="showPage('home')">Thrift <span>The</span> Future</div>
-        
         <ul class="nav-links">
             <li><a onclick="showPage('home')">Home</a></li>
             <li><a onclick="showPage('shop')">Shop</a></li>
             <li><a onclick="showPage('about')">About</a></li>
             <li><a onclick="showPage('contact')">Contact</a></li>
         </ul>
-
         <div class="nav-icons">
             <button class="icon-btn" onclick="toggleTheme()">◐</button>
             <button class="icon-btn" onclick="toggleCart()">
@@ -217,19 +248,19 @@
 
     <div class="mobile-menu" id="mobileMenu">
         <div class="close-menu" onclick="toggleMenu()">&times;</div>
-        <a class="mobile-link" onclick="mobileNav('home')" style="transition-delay: 0.1s">Home</a>
-        <a class="mobile-link" onclick="mobileNav('shop')" style="transition-delay: 0.2s">Shop</a>
-        <a class="mobile-link" onclick="mobileNav('about')" style="transition-delay: 0.3s">About</a>
-        <a class="mobile-link" onclick="mobileNav('contact')" style="transition-delay: 0.4s">Contact</a>
+        <a class="mobile-link" onclick="mobileNav('home')">Home</a>
+        <a class="mobile-link" onclick="mobileNav('shop')">Shop</a>
+        <a class="mobile-link" onclick="mobileNav('about')">About</a>
+        <a class="mobile-link" onclick="mobileNav('contact')">Contact</a>
     </div>
 
     <div class="cart-overlay" onclick="toggleCart()"></div>
     <div class="cart-sidebar">
-        <div style="padding: 20px; border-bottom: 1px solid var(--border); display:flex; justify-content:space-between;">
+        <div class="cart-header">
             <h3>Your Bag</h3><span onclick="toggleCart()" style="cursor:pointer; font-size:1.5rem;">&times;</span>
         </div>
         <div class="cart-list" id="cart-list"></div>
-        <div style="padding: 20px; background: var(--bg-nav); border-top: 1px solid var(--border);">
+        <div class="cart-footer">
             <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:bold; font-size:1.2rem;">
                 <span>Total</span><span id="cart-total">₹0</span>
             </div>
@@ -239,20 +270,17 @@
 
     <div class="pay-overlay" id="payOverlay">
         <div class="spinner" id="paySpinner"></div>
-        <svg class="checkmark" id="paySuccess" style="display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
-            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-        </svg>
-        <h2 id="payText" style="margin-top:20px;">Processing Payment...</h2>
+        <div style="font-size:3rem; color:#4cd137; display:none;" id="paySuccess">✔</div>
+        <h2 id="payText" style="margin-top:20px;">Processing...</h2>
     </div>
 
     <div id="home" class="page active">
-        <header style="height: 70vh; background: #000; position:relative; display:flex; align-items:center; justify-content:center; text-align:center; color:white;">
+        <header style="height: 60vh; background: #000; position:relative; display:flex; align-items:center; justify-content:center; text-align:center; color:white;">
             <div style="position:absolute; inset:0; background:url('https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070') center/cover; opacity:0.6;"></div>
             <div style="z-index:2; max-width:800px; padding:20px;">
-                <h1 style="font-family:var(--font-serif); font-size:3.5rem; margin-bottom:20px;">Thrift The Future</h1>
-                <p style="font-size:1.2rem; margin-bottom:30px;">Premium Vintage & Sustainable Fashion</p>
-                <button class="btn" onclick="showPage('shop')">Explore Collection</button>
+                <h1 style="font-family:var(--font-serif); font-size:3rem; margin-bottom:15px;">Thrift The Future</h1>
+                <p style="font-size:1.1rem; margin-bottom:25px;">Premium Sustainable Fashion</p>
+                <button class="btn" onclick="showPage('shop')">Shop Now</button>
             </div>
         </header>
         <div class="container">
@@ -265,74 +293,74 @@
         <div class="container">
             <h2 class="section-title">Full Catalog</h2>
             <div class="grid" id="shop-grid"></div>
-            <div class="pagination" id="pagination-controls"></div>
+            <div style="display:flex; justify-content:center; gap:10px; margin-top:50px;" id="pagination-controls"></div>
         </div>
     </div>
 
     <div id="product-page" class="page">
         <div class="container">
-            <div class="breadcrumb">
-                <span onclick="showPage('home')">Home</span> > <span onclick="showPage('shop')">Shop</span> > <span id="pdp-crumb-title">Product</span>
-            </div>
-            <div class="pdp-container">
-                <div class="pdp-image">
-                    <img id="pdp-img" src="" alt="Product Image">
+            <button onclick="showPage('shop')" style="background:none; border:1px solid var(--border); padding:8px 15px; border-radius:4px; margin-bottom:20px; color:var(--text-sub);">← Back to Shop</button>
+            
+            <div class="pdp-wrapper">
+                <div class="pdp-left">
+                    <div class="pdp-image-box">
+                        <img id="pdp-img" src="" alt="Product">
+                    </div>
                 </div>
-                <div class="pdp-details">
-                    <h1 class="pdp-title" id="pdp-title">Product Title</h1>
+
+                <div class="pdp-right">
+                    <h1 class="pdp-title" id="pdp-title">Product Name</h1>
                     <div class="pdp-price" id="pdp-price">₹0</div>
-                    <p class="pdp-desc" id="pdp-desc">Description goes here.</p>
-                    <div class="option-group">
+                    <div class="pdp-desc" id="pdp-desc">Description text...</div>
+
+                    <div class="option-row">
                         <label class="option-label">Select Size</label>
-                        <div class="size-selector" id="size-container">
-                            <div class="size-box" onclick="selectSize(this)">XS</div>
-                            <div class="size-box" onclick="selectSize(this)">S</div>
-                            <div class="size-box selected" onclick="selectSize(this)">M</div>
-                            <div class="size-box" onclick="selectSize(this)">L</div>
-                            <div class="size-box" onclick="selectSize(this)">XL</div>
+                        <div class="size-list">
+                            <div class="size-btn" onclick="selectSize(this)">XS</div>
+                            <div class="size-btn" onclick="selectSize(this)">S</div>
+                            <div class="size-btn selected" onclick="selectSize(this)">M</div>
+                            <div class="size-btn" onclick="selectSize(this)">L</div>
+                            <div class="size-btn" onclick="selectSize(this)">XL</div>
                         </div>
                     </div>
-                    <div class="option-group">
+
+                    <div class="option-row">
                         <label class="option-label">Quantity</label>
-                        <div class="qty-selector">
-                            <div class="qty-btn" onclick="qtyChange(-1)">-</div>
-                            <div class="qty-input" id="pdp-qty">1</div>
-                            <div class="qty-btn" onclick="qtyChange(1)">+</div>
+                        <div class="qty-box">
+                            <div class="qty-control" onclick="qtyChange(-1)">-</div>
+                            <div class="qty-val" id="pdp-qty">1</div>
+                            <div class="qty-control" onclick="qtyChange(1)">+</div>
                         </div>
                     </div>
-                    <button class="btn" style="width:100%; padding: 20px; font-size:1.1rem;" onclick="addToCartFromPDP()">Add To Bag</button>
+
+                    <div class="pdp-actions">
+                        <button class="btn" style="flex:1;" onclick="addToCartFromPDP()">Add To Bag</button>
+                    </div>
+                    <div style="margin-top:20px; font-size:0.8rem; color:var(--text-sub);">
+                        ✅ Secure Checkout &nbsp;&nbsp; 📦 Free Shipping
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="checkout" class="page">
-        <div class="container" style="max-width:800px;">
-            <h2 class="section-title">Secure Checkout</h2>
-            <div style="background:var(--bg-card); padding:30px; border:1px solid var(--border); border-radius:8px;">
+        <div class="container" style="max-width:600px;">
+            <h2 class="section-title">Checkout</h2>
+            <div style="background:var(--bg-card); padding:30px; border-radius:8px; box-shadow:var(--shadow);">
                 <form onsubmit="startPayment(event)">
-                    <h3 style="margin-bottom:20px;">Shipping Details</h3>
-                    <div style="display:flex; gap:20px; margin-bottom:15px;">
-                        <input type="text" id="fname" placeholder="First Name" required>
-                        <input type="text" id="lname" placeholder="Last Name" required>
+                    <label style="display:block;margin-bottom:5px;font-weight:bold;">Full Name</label>
+                    <input type="text" id="fname" required>
+                    <label style="display:block;margin-bottom:5px;font-weight:bold;">Address</label>
+                    <input type="text" id="addr" required>
+                    <div style="display:flex; gap:10px;">
+                        <div style="flex:1"><label style="display:block;margin-bottom:5px;font-weight:bold;">City</label><input type="text" required></div>
+                        <div style="flex:1"><label style="display:block;margin-bottom:5px;font-weight:bold;">Phone</label><input type="tel" required></div>
                     </div>
-                    <input type="text" id="addr" placeholder="Full Address" required style="margin-bottom:15px;">
-                    <div style="display:flex; gap:20px; margin-bottom:15px;">
-                        <input type="text" placeholder="City" required>
-                        <input type="tel" placeholder="Phone" required>
+                    <div style="margin-top:20px; font-weight:bold; font-size:1.2rem; text-align:right;">
+                        Payable: <span id="checkout-total">₹0</span>
                     </div>
-                    
-                    <h3 style="margin:30px 0 15px;">Payment Method</h3>
-                    <div class="payment-methods">
-                        <div class="pay-card selected" onclick="selectPayment(this)">UPI / GPay</div>
-                        <div class="pay-card" onclick="selectPayment(this)">Card</div>
-                        <div class="pay-card" onclick="selectPayment(this)">COD</div>
-                    </div>
-
-                    <div style="margin-top:30px; border-top:1px solid var(--border); padding-top:20px; text-align:right;">
-                        <div style="font-size:1.3rem; font-weight:bold; margin-bottom:15px;">Total to Pay: <span id="checkout-total">₹0</span></div>
-                        <button class="btn" style="width:100%;">Place Order</button>
-                    </div>
+                    <button class="btn" style="width:100%; margin-top:20px;">Place Order</button>
                 </form>
             </div>
         </div>
@@ -340,134 +368,104 @@
 
     <div id="order-success" class="page">
         <div class="container" style="text-align:center;">
-            <div style="margin-bottom:20px; color:#4cd137; font-size:3rem;">✔</div>
+            <div style="font-size:4rem; color:#4cd137; margin-bottom:15px;">✔</div>
             <h2 class="section-title" style="margin-bottom:10px;">Order Confirmed!</h2>
-            <p style="color:var(--text-sub); margin-bottom:30px;">Thank you for shopping with Thrift The Future.</p>
             <div class="receipt-card" id="receipt-content"></div>
             <button class="btn" style="margin-top:30px;" onclick="showPage('home')">Continue Shopping</button>
         </div>
     </div>
 
-    <div id="contact" class="page">
-        <div class="container" style="text-align:center;">
-            <h2 class="section-title">Contact</h2>
-            <div style="background:var(--bg-card); padding:30px; display:inline-block; border:1px solid var(--border);">
-                <p><strong>Owner:</strong> Kunal</p>
-                <p><strong>Email:</strong> kernalrajput1337@gmail.com</p>
-                <p><strong>Phone:</strong> +91 7668966389</p>
-            </div>
-        </div>
-    </div>
-    
-    <div id="about" class="page"><div class="container"><h2>About</h2><p>Thrift The Future is a curated vintage store founded by Kunal.</p></div></div>
-
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>Customer Care</h4>
-                <ul><li>Shipping</li><li>Returns</li><li>FAQ</li></ul>
-            </div>
-            <div class="footer-col">
-                <h4>Contact</h4>
-                <ul><li>Kunal</li><li>kernalrajput1337@gmail.com</li><li>+91 7668966389</li></ul>
-            </div>
-            <div class="footer-col">
-                <h4>Location</h4>
-                <ul><li>Agra, India</li></ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 Thrift The Future</p>
-            <p>Powered By : Kunal</p>
-        </div>
-    </footer>
+    <div id="contact" class="page"><div class="container" style="text-align:center;"><h2>Contact</h2><p>kernalrajput1337@gmail.com | +91 7668966389</p></div></div>
+    <div id="about" class="page"><div class="container"><h2>About Us</h2><p>Thrift The Future is a sustainable fashion store.</p></div></div>
 
     <script>
-        // --- WATERMARK ---
-        const wm = document.getElementById('watermarkContainer');
-        for(let i=0; i<50; i++) {
-            const s = document.createElement('span'); s.className='watermark-text'; s.innerText="PROTOTYPE"; wm.appendChild(s);
-        }
+        // Data
+        const imgs=["1591047139829-d91aecb6caea","1596755094514-f87e34085b2c","1556905055-8f358a7a47b2","1624378439575-d8705ad7ae80","1487222477894-8943e31ef7b2"];
+        const products=[]; for(let i=1;i<=80;i++){products.push({id:i,t:`Vintage Item #${i}`,p:Math.floor(Math.random()*3500+500),i:`https://images.unsplash.com/photo-${imgs[i%5]}?q=80&w=600&auto=format&fit=crop`});}
 
-        // --- DATA ---
-        const baseImages = [
-            "1591047139829-d91aecb6caea", "1596755094514-f87e34085b2c", "1556905055-8f358a7a47b2", "1624378439575-d8705ad7ae80",
-            "1487222477894-8943e31ef7b2", "1521572163474-6864f9cf17ab", "1517445312882-5627b9316371", "1598532163293-84757f54c955",
-            "1539533018447-63fcce2678e3", "1626557981101-aae6f84aa6ff", "1572804013309-59a88b7e92f1", "1564257631407-4deb1f99d992",
-            "1541099649105-f69ad21f3246", "1434389677669-e08b4cac3105", "1583496661160-fb5886a0aaaa", "1595777457583-95e059d581b8",
-            "1591369822096-35c93a18872b", "1582142327373-5b67280c4069", "1584273143981-41c073dfe8f8", "1590874103328-eac38a683ce7"
-        ];
-        const cats = ["Men", "Women", "Shoes", "Acc"];
-        const products = [];
-        for(let i=1; i<=80; i++) {
-            products.push({ id: i, t: `Vintage Item #${i}`, p: Math.floor(Math.random()*(4000-500)+500), c: cats[i%4], i: `https://images.unsplash.com/photo-${baseImages[i%20]}?q=80&w=600&auto=format&fit=crop` });
-        }
+        let cart=[], curProd=null, curPage=1;
+        
+        // Helpers
+        const cardHTML=(p)=>`<div class="card" onclick="openP(${p.id})"><div class="card-img"><img src="${p.i}" loading="lazy"></div><div class="card-info"><div class="card-title">${p.t}</div><div class="card-price">₹${p.p}</div></div></div>`;
+        
+        // Init
+        document.getElementById('home-grid').innerHTML = products.slice(0,8).map(cardHTML).join('');
+        renderShop(1);
 
-        let cart=[], curProd=null, curPage=1; const perPage=15;
-
-        // --- RENDER ---
-        function renderHome() { document.getElementById('home-grid').innerHTML = products.map((p,i)=>cardHTML(p,Math.min(i*0.03,1))).join(''); }
-        function renderShop(pg) {
-            const start=(pg-1)*perPage, end=start+perPage;
-            document.getElementById('shop-grid').innerHTML = products.slice(start,end).map((p,i)=>cardHTML(p,i*0.05)).join('');
-            let html=`<button class="page-btn" onclick="chgPage(${pg-1})" ${pg===1?'disabled':''}>&lt;</button>`;
-            for(let i=1; i<=Math.ceil(products.length/perPage); i++) html+=`<button class="page-btn ${i===pg?'active':''}" onclick="chgPage(${i})">${i}</button>`;
-            html+=`<button class="page-btn" onclick="chgPage(${pg+1})" ${pg===Math.ceil(products.length/perPage)?'disabled':''}>&gt;</button>`;
+        function renderShop(pg){
+            const start=(pg-1)*15, end=start+15;
+            document.getElementById('shop-grid').innerHTML = products.slice(start,end).map(cardHTML).join('');
+            // Simple pagination
+            let html=`<button class="btn" style="padding:10px;" onclick="chgPage(${pg-1})" ${pg===1?'disabled':''}>Prev</button> <span style="font-weight:bold; padding:10px;">Page ${pg}</span> <button class="btn" style="padding:10px;" onclick="chgPage(${pg+1})" ${pg===Math.ceil(products.length/15)?'disabled':''}>Next</button>`;
             document.getElementById('pagination-controls').innerHTML=html;
         }
-        function cardHTML(p,d) { return `<div class="card" onclick="openP(${p.id})" style="animation-delay:${d}s"><div class="card-img"><img src="${p.i}" loading="lazy"></div><div class="card-info"><div class="card-title">${p.t}</div><div class="card-price">₹${p.p}</div></div></div>`; }
-        function chgPage(n) { if(n<1 || n>Math.ceil(products.length/perPage))return; curPage=n; renderShop(n); document.getElementById('shop').scrollIntoView({behavior:'smooth'}); }
-        
-        renderHome(); renderShop(1);
+        function chgPage(n){ if(n<1||n>Math.ceil(products.length/15))return; curPage=n; renderShop(n); document.getElementById('shop').scrollIntoView({behavior:'smooth'}); }
 
-        // --- LOGIC ---
-        function openP(id) {
-            curProd = products.find(p=>p.id===id);
-            document.getElementById('pdp-img').src=curProd.i; document.getElementById('pdp-title').innerText=curProd.t;
-            document.getElementById('pdp-price').innerText='₹'+curProd.p; document.getElementById('pdp-desc').innerText=`Authentic ${curProd.t}.`;
+        // Interactions
+        function openP(id){
+            curProd=products.find(p=>p.id===id);
+            document.getElementById('pdp-img').src=curProd.i; 
+            document.getElementById('pdp-title').innerText=curProd.t;
+            document.getElementById('pdp-price').innerText='₹'+curProd.p; 
+            document.getElementById('pdp-desc').innerText=`Authentic ${curProd.t}.`;
+            document.getElementById('pdp-qty').innerText='1';
             showPage('product-page');
         }
-        function addToCartFromPDP() {
-            const sz=document.querySelector('.size-box.selected').innerText, qty=parseInt(document.getElementById('pdp-qty').innerText);
+        function selectSize(e){document.querySelectorAll('.size-btn').forEach(x=>x.classList.remove('selected'));e.classList.add('selected');}
+        function qtyChange(d){let e=document.getElementById('pdp-qty'),v=parseInt(e.innerText)+d;if(v<1)v=1;e.innerText=v;}
+        
+        function addToCartFromPDP(){
+            const sz=document.querySelector('.size-btn.selected').innerText, qty=parseInt(document.getElementById('pdp-qty').innerText);
             cart.push({...curProd, size:sz, qty:qty}); updCart(); toggleCart();
         }
-        function updCart() {
+
+        function updCart(){
             document.getElementById('count').innerText=cart.length;
             let t=0;
-            document.getElementById('cart-list').innerHTML=cart.length?cart.map((x,i)=>{t+=x.p*x.qty; return `<div class="cart-item"><img src="${x.i}"><div style="flex:1;"><b>${x.t}</b><br><small>${x.size} | Qty:${x.qty}</small><br>₹${x.p}</div><div onclick="rmItem(${i})" style="color:red;cursor:pointer;">&times;</div></div>`}).join(''):'<div style="text-align:center;padding:20px;color:#999;">Empty</div>';
+            // FIXED CART LIST HTML
+            document.getElementById('cart-list').innerHTML=cart.length?cart.map((x,i)=>{t+=x.p*x.qty; return `
+                <div class="cart-item">
+                    <img class="cart-thumb" src="${x.i}">
+                    <div class="cart-details">
+                        <div class="cart-title">${x.t}</div>
+                        <div class="cart-meta">${x.size} | Qty: ${x.qty}</div>
+                        <div style="font-weight:bold;">₹${x.p*x.qty}</div>
+                    </div>
+                    <div class="cart-remove" onclick="rmItem(${i})">&times;</div>
+                </div>`;}).join(''):'<div style="text-align:center;color:#999;padding:20px;">Bag is empty</div>';
             document.getElementById('cart-total').innerText='₹'+t; document.getElementById('checkout-total').innerText='₹'+t;
         }
-        function rmItem(i){cart.splice(i,1);updCart();} 
-        function toggleCart(){document.body.classList.toggle('cart-active');}
-        function toggleTheme(){document.body.classList.toggle('dark-mode');}
-        function selectSize(e){document.querySelectorAll('.size-box').forEach(x=>x.classList.remove('selected'));e.classList.add('selected');}
-        function qtyChange(d){let e=document.getElementById('pdp-qty'),v=parseInt(e.innerText)+d;if(v<1)v=1;e.innerText=v;}
-        function goCheckout(){if(!cart.length)return alert('Empty');toggleCart();showPage('checkout');}
-        function selectPayment(e){document.querySelectorAll('.pay-card').forEach(x=>x.classList.remove('selected'));e.classList.add('selected');}
-        
-        // Mobile Menu
-        function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
-        function mobileNav(pg){ toggleMenu(); showPage(pg); }
+        function rmItem(i){cart.splice(i,1);updCart();}
 
+        // Nav
         function showPage(id){
             document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             window.scrollTo({top:0,behavior:'smooth'});
             document.body.classList.remove('cart-active');
+            document.getElementById('mobileMenu').classList.remove('open');
         }
+        function toggleCart(){document.body.classList.toggle('cart-active');}
+        function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
+        function mobileNav(pg){showPage(pg);}
+        function toggleTheme(){document.body.classList.toggle('dark-mode');}
+        function goCheckout(){if(!cart.length)return alert('Empty');toggleCart();showPage('checkout');}
 
+        // Checkout
         function startPayment(e){
             e.preventDefault();
-            const fn=document.getElementById('fname').value, ln=document.getElementById('lname').value, addr=document.getElementById('addr').value, tot=document.getElementById('checkout-total').innerText;
+            const fn=document.getElementById('fname').value, addr=document.getElementById('addr').value, tot=document.getElementById('checkout-total').innerText;
             document.getElementById('payOverlay').style.display='flex';
             setTimeout(()=>{
                 document.getElementById('paySpinner').style.display='none';
                 document.getElementById('paySuccess').style.display='block';
                 document.getElementById('payText').innerText='Success!';
                 setTimeout(()=>{
+                    // Receipt
                     let items=cart.map(x=>`<div class="receipt-row"><span>${x.qty}x ${x.t} (${x.size})</span><span>₹${x.p*x.qty}</span></div>`).join('');
-                    document.getElementById('receipt-content').innerHTML=`<div class="receipt-header"><h3>Order #${Math.floor(Math.random()*99999)}</h3></div><div><strong>Ship To:</strong><br>${fn} ${ln}<br>${addr}</div><br>${items}<div class="receipt-row bold"><span>Total</span><span>${tot}</span></div>`;
-                    cart=[]; updCart(); document.getElementById('payOverlay').style.display='none';
+                    document.getElementById('receipt-content').innerHTML=`<h3>Order Confirmed</h3><p>${new Date().toLocaleDateString()}</p><hr style="margin:10px 0; border:0; border-top:1px solid #eee;"><div><strong>Ship To:</strong> ${fn}<br>${addr}</div><br>${items}<div class="receipt-total"><span>Total</span><span>${tot}</span></div>`;
+                    cart=[]; updCart();
+                    document.getElementById('payOverlay').style.display='none';
                     document.getElementById('paySpinner').style.display='block'; document.getElementById('paySuccess').style.display='none'; document.getElementById('payText').innerText='Processing...';
                     showPage('order-success');
                 },1500);
