@@ -48,14 +48,13 @@
         .container { padding: 40px 5%; max-width: 1400px; margin: 0 auto; }
         .section-title { text-align: center; margin-bottom: 40px; font-family: var(--font-serif); font-size: 2.5rem; color: var(--primary); }
         
-        /* Fade Animation */
         .page { display: none; opacity: 0; transition: opacity 0.5s ease; }
         .page.active { display: block; opacity: 1; }
 
         /* --- 3. WATERMARK OVERLAY --- */
         .watermark-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 9999; pointer-events: none; opacity: 0.04;
+            z-index: 9999; pointer-events: none; opacity: 0.03;
             display: flex; flex-wrap: wrap; overflow: hidden;
             transform: rotate(-30deg) scale(1.5);
         }
@@ -65,11 +64,15 @@
         }
         body.dark-mode .watermark-text { color: #fff; }
 
-        /* --- 4. NAV & HEADER --- */
+        /* --- 4. NAV & HEADER (Fixed Mobile View) --- */
         .notification-bar { background: var(--primary); color: var(--inverse); text-align: center; padding: 10px; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; }
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--bg-nav); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--bg-nav); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); transition: 0.3s; }
         
-        .brand-logo { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 900; text-transform: uppercase; border: 2px solid var(--primary); padding: 5px 15px; color: var(--primary); }
+        .brand-logo { 
+            font-family: var(--font-serif); font-size: 1.8rem; font-weight: 900; 
+            text-transform: uppercase; border: 2px solid var(--primary); 
+            padding: 5px 15px; color: var(--primary); transition: 0.3s;
+        }
         .brand-logo span { color: var(--accent); font-style: italic; }
         
         .nav-links { display: flex; gap: 30px; }
@@ -77,21 +80,27 @@
         .nav-links li a:hover { color: var(--accent); }
         
         .nav-icons { display: flex; gap: 20px; align-items: center; }
-        .icon-btn { background: none; font-size: 1.3rem; color: var(--primary); position: relative; }
+        .icon-btn { background: none; font-size: 1.3rem; color: var(--primary); position: relative; transition: 0.3s; }
         .cart-count { position: absolute; top: -5px; right: -8px; background: var(--accent); color: #000; font-size: 0.7rem; width: 18px; height: 18px; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; }
 
-        /* --- 5. GRID & CARDS --- */
+        /* --- 5. GRID & CARDS (Enhanced Animation) --- */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
-        .card { 
-            background: var(--bg-card); cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            border: 1px solid transparent; opacity: 0; animation: fadeUp 0.6s forwards;
-        }
-        .card:hover { transform: translateY(-8px); box-shadow: var(--shadow); border-color: var(--border); }
         
-        @keyframes fadeUp { to { opacity: 1; } }
+        .card { 
+            background: var(--bg-card); cursor: pointer; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; 
+            border: 1px solid transparent; 
+            opacity: 0; animation: fadeUp 0.8s forwards; /* Default animation */
+        }
+        
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: var(--border); }
+        
         .card-img { height: 320px; overflow: hidden; background: #eee; position: relative; }
-        .card:hover .card-img img { transform: scale(1.08); transition: 0.6s ease; }
+        .card:hover .card-img img { transform: scale(1.1); transition: 0.6s ease; }
         
         .card-info { padding: 15px; text-align: center; }
         .card-title { font-size: 0.95rem; margin-bottom: 5px; color: var(--text-main); font-weight: 600; }
@@ -167,17 +176,27 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
+        /* --- 10. RESPONSIVE FIXES (Prompt Request) --- */
         @media(max-width: 768px) {
+            /* Fix Top Banner Size */
+            .brand-logo { font-size: 1.1rem; padding: 6px 10px; border-width: 1px; }
+            
+            /* Fix Button Sizes */
+            .nav-icons { gap: 15px; }
+            .icon-btn { font-size: 1.6rem; padding: 5px; /* Larger tap target */ }
+            
+            /* Layout Adjustments */
             .pdp-container { flex-direction: column; gap: 20px; }
             .pdp-image { height: 400px; }
             .nav-links { display: none; }
+            .container { padding: 30px 4%; }
+            .hero h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="watermark-overlay" id="watermarkContainer">
-        </div>
+    <div class="watermark-overlay" id="watermarkContainer"></div>
 
     <div class="notification-bar">Free Shipping Over ₹999 | Code: KUNAL10</div>
 
@@ -190,8 +209,8 @@
             <li><a onclick="showPage('contact')">Contact</a></li>
         </ul>
         <div class="nav-icons">
-            <button class="icon-btn" onclick="toggleTheme()">◐</button>
-            <button class="icon-btn" onclick="toggleCart()">
+            <button class="icon-btn" onclick="toggleTheme()" aria-label="Dark Mode">◐</button>
+            <button class="icon-btn" onclick="toggleCart()" aria-label="Cart">
                 🛒<div class="cart-count" id="count">0</div>
             </button>
         </div>
@@ -228,6 +247,7 @@
         </header>
         <div class="container">
             <h2 class="section-title">New Arrivals</h2>
+            <p style="text-align:center; color:var(--text-sub); margin-bottom:30px;">Browsing all available items</p>
             <div class="grid" id="home-grid"></div>
         </div>
     </div>
@@ -337,7 +357,6 @@
         }
 
         // --- 2. DATA (80 PRODUCTS) ---
-        // Helper to generate products
         const baseImages = [
             "1591047139829-d91aecb6caea", "1596755094514-f87e34085b2c", "1556905055-8f358a7a47b2", "1624378439575-d8705ad7ae80",
             "1487222477894-8943e31ef7b2", "1521572163474-6864f9cf17ab", "1517445312882-5627b9316371", "1598532163293-84757f54c955",
@@ -349,14 +368,13 @@
         const categories = ["Men", "Women", "Shoes", "Accessories"];
         const products = [];
 
-        // Generate 80 products
         for(let i=1; i<=80; i++) {
             const imgId = baseImages[i % baseImages.length];
             const category = categories[i % 4];
             products.push({
                 id: i,
                 t: `Vintage Item #${i} - ${category}`,
-                p: Math.floor(Math.random() * (4000 - 500) + 500), // Random price 500-4000
+                p: Math.floor(Math.random() * (4000 - 500) + 500),
                 c: category,
                 i: `https://images.unsplash.com/photo-${imgId}?q=80&w=600&auto=format&fit=crop`
             });
@@ -367,11 +385,11 @@
         let currentPage = 1;
         const itemsPerPage = 15;
 
-        // --- GRID RENDERING & PAGINATION ---
+        // --- RENDER FUNCTIONS ---
         function renderHomeGrid() {
-            // Display first 8 items for home
             const container = document.getElementById('home-grid');
-            container.innerHTML = products.slice(0, 8).map(p => createCardHTML(p)).join('');
+            // Render ALL 80 products with staggered delay capped at 1s max
+            container.innerHTML = products.map((p, index) => createCardHTML(p, Math.min(index * 0.03, 1.0))).join('');
         }
 
         function renderShopGrid(page) {
@@ -380,9 +398,8 @@
             const end = start + itemsPerPage;
             const pageItems = products.slice(start, end);
             
-            // Render Items with animation delay for stagger effect
+            // Stagger animation for shop page
             container.innerHTML = pageItems.map((p, index) => createCardHTML(p, index * 0.05)).join('');
-            
             renderPagination(page);
         }
 
@@ -403,27 +420,23 @@
             const controls = document.getElementById('pagination-controls');
             let html = ``;
 
-            // Prev
             html += `<button class="page-btn" onclick="changePage(${page-1})" ${page===1?'disabled':''}>&lt;</button>`;
-            
-            // Numbers
             for(let i=1; i<=totalPages; i++) {
                 html += `<button class="page-btn ${i===page?'active':''}" onclick="changePage(${i})">${i}</button>`;
             }
-
-            // Next
             html += `<button class="page-btn" onclick="changePage(${page+1})" ${page===totalPages?'disabled':''}>&gt;</button>`;
             
             controls.innerHTML = html;
         }
 
         function changePage(newPage) {
+            if(newPage < 1 || newPage > Math.ceil(products.length / itemsPerPage)) return;
             currentPage = newPage;
             renderShopGrid(currentPage);
             document.getElementById('shop').scrollIntoView({behavior:'smooth'});
         }
 
-        // Init
+        // Initialize
         renderHomeGrid();
         renderShopGrid(1);
 
