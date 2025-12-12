@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thrift The Future | Final Fixed</title>
+    <title>Thrift The Future | Final Mobile Fix</title>
     <style>
         /* --- 1. RESET & VARIABLES --- */
         :root {
@@ -49,14 +49,31 @@
         }
         .btn:hover { background: var(--accent); color: #000; transform: translateY(-2px); }
         
-        .container { padding: 40px 5%; max-width: 1200px; margin: 0 auto; }
+        .container { padding: 40px 5%; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
         .section-title { text-align: center; margin-bottom: 40px; font-family: var(--font-serif); font-size: 2.2rem; color: var(--primary); }
         
         .page { display: none; animation: fadeIn 0.4s ease-out forwards; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- 3. NAV & HEADER --- */
+        /* --- 3. WATERMARK (UPDATED) --- */
+        .watermark-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 9999; 
+            pointer-events: none;
+            opacity: 0.05; 
+            display: flex; flex-wrap: wrap; 
+            align-content: center; justify-content: center;
+            overflow: hidden;
+            transform: rotate(-30deg) scale(1.5);
+        }
+        .watermark-text {
+            font-size: 4rem; font-weight: 900; text-transform: uppercase;
+            color: #000; margin: 40px; white-space: nowrap; user-select: none;
+        }
+        body.dark-mode .watermark-text { color: #fff; }
+
+        /* --- 4. NAV & HEADER --- */
         .notification-bar { background: var(--primary); color: var(--inverse); text-align: center; padding: 10px; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; z-index: 1002; position: relative; }
         
         nav { 
@@ -98,12 +115,12 @@
         .mobile-link { font-size: 1.8rem; font-family: var(--font-serif); font-weight: bold; margin: 15px 0; color: var(--primary); }
         .close-menu { position: absolute; top: 20px; right: 20px; font-size: 2.5rem; color: var(--primary); }
 
-        /* --- 4. PRODUCT GRID --- */
+        /* --- 5. PRODUCT GRID --- */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
         .card { 
             background: var(--bg-card); border-radius: 8px; overflow: hidden; 
             transition: 0.3s; border: 1px solid transparent; 
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow); position: relative; z-index: 2;
         }
         .card:hover { transform: translateY(-5px); border-color: var(--accent); }
         .card-img { height: 280px; overflow: hidden; background: #eee; }
@@ -112,31 +129,22 @@
         .card-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 5px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-price { color: var(--accent); font-weight: bold; font-size: 1rem; }
 
-        /* --- 5. FIXED PRODUCT PAGE (PDP) --- */
-        /* Center container, constraint width */
+        /* --- 6. FIXED PRODUCT PAGE (PDP) --- */
         .pdp-wrapper { 
             display: flex; gap: 40px; margin-top: 20px; 
             background: var(--bg-card); padding: 40px; 
             border-radius: 12px; box-shadow: var(--shadow);
-            align-items: flex-start;
+            align-items: flex-start; position: relative; z-index: 2;
         }
 
-        /* Smaller Image - Contained */
-        .pdp-left { 
-            flex: 0 0 400px; /* Fixed width for image container */
-            max-width: 100%;
-        }
+        .pdp-left { flex: 0 0 400px; max-width: 100%; }
         .pdp-image-box {
-            width: 100%; height: 400px; /* Square aspect ratio */
+            width: 100%; height: 400px; 
             background: #f0f0f0; border-radius: 8px; overflow: hidden;
             border: 1px solid var(--border);
         }
-        .pdp-image-box img { 
-            width: 100%; height: 100%; object-fit: cover; /* or contain if you prefer */
-        }
-
-        .pdp-right { flex: 1; }
         
+        .pdp-right { flex: 1; }
         .pdp-title { font-family: var(--font-serif); font-size: 2rem; margin-bottom: 10px; color: var(--primary); line-height: 1.2; }
         .pdp-price { font-size: 1.6rem; color: var(--accent); font-weight: 700; margin-bottom: 20px; }
         .pdp-desc { line-height: 1.6; color: var(--text-sub); margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
@@ -144,7 +152,6 @@
         .option-row { margin-bottom: 20px; }
         .option-label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase; color: var(--text-sub); }
 
-        /* Size Buttons */
         .size-list { display: flex; gap: 10px; }
         .size-btn { 
             width: 45px; height: 45px; border: 1px solid var(--border); 
@@ -155,7 +162,6 @@
         .size-btn:hover { border-color: var(--primary); }
         .size-btn.selected { background: var(--primary); color: var(--inverse); border-color: var(--primary); }
 
-        /* Quantity Buttons */
         .qty-box { display: flex; align-items: center; border: 1px solid var(--border); width: max-content; border-radius: 4px; overflow: hidden; }
         .qty-control { 
             width: 40px; height: 40px; background: var(--bg-body); 
@@ -165,11 +171,10 @@
         }
         .qty-control:hover { background: #ddd; }
         .qty-val { width: 40px; text-align: center; font-weight: bold; font-size: 1rem; color: var(--text-main); }
-
-        /* Actions */
+        
         .pdp-actions { margin-top: 30px; display: flex; gap: 15px; }
 
-        /* --- 6. CART SIDEBAR (FIXED) --- */
+        /* --- 7. CART SIDEBAR (FIXED) --- */
         .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; display: none; }
         .cart-sidebar { 
             position: fixed; top: 0; right: 0; width: 100%; max-width: 400px; height: 100%; 
@@ -191,23 +196,29 @@
 
         .cart-footer { padding: 20px; border-top: 1px solid var(--border); background: var(--bg-nav); }
         
-        /* --- 7. CHECKOUT & PAYMENT --- */
+        /* --- 8. CHECKOUT & PAYMENT --- */
         .pay-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; color: white; }
         .spinner { width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         
-        .receipt-card { background: var(--bg-card); padding: 30px; border-radius: 8px; width: 90%; max-width: 500px; text-align: left; }
+        .receipt-card { background: var(--bg-card); padding: 30px; border-radius: 8px; width: 90%; max-width: 500px; text-align: left; position: relative; z-index: 2;}
         .receipt-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-sub); }
         .receipt-total { border-top: 1px solid var(--border); margin-top: 15px; padding-top: 15px; font-weight: bold; color: var(--text-main); font-size: 1.1rem; display: flex; justify-content: space-between; }
         
         input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-body); color: var(--text-main); }
         
-        /* --- 8. RESPONSIVE --- */
+        /* --- 9. RESPONSIVE --- */
         @media(max-width: 768px) {
             .nav-links { display: none; }
             .hamburger { display: block; }
             
-            /* Stack PDP */
+            /* -- MOBILE FIX: Bigger Icons -- */
+            .nav-icons { gap: 20px; }
+            .icon-btn { 
+                font-size: 1.8rem; /* Bigger Icon */
+                padding: 10px;     /* Bigger Touch Target */
+            }
+
             .pdp-wrapper { flex-direction: column; padding: 20px; gap: 20px; }
             .pdp-left { flex: auto; width: 100%; }
             .pdp-image-box { height: 350px; margin: 0 auto; }
@@ -221,11 +232,13 @@
                 z-index: 999; box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
             }
             .pdp-actions .btn { width: 100%; }
-            .container { padding-bottom: 80px; } /* Spacer */
+            .container { padding-bottom: 80px; } 
         }
     </style>
 </head>
 <body>
+
+    <div class="watermark-overlay" id="watermarkContainer"></div>
 
     <div class="notification-bar">Free Shipping on Orders Over ₹999 | Code: KUNAL10</div>
 
@@ -239,8 +252,8 @@
             <li><a onclick="showPage('contact')">Contact</a></li>
         </ul>
         <div class="nav-icons">
-            <button class="icon-btn" onclick="toggleTheme()">◐</button>
-            <button class="icon-btn" onclick="toggleCart()">
+            <button class="icon-btn" onclick="toggleTheme()" aria-label="Dark Mode">◐</button>
+            <button class="icon-btn" onclick="toggleCart()" aria-label="Cart">
                 🛒<div class="cart-count" id="count">0</div>
             </button>
         </div>
@@ -293,7 +306,7 @@
         <div class="container">
             <h2 class="section-title">Full Catalog</h2>
             <div class="grid" id="shop-grid"></div>
-            <div style="display:flex; justify-content:center; gap:10px; margin-top:50px;" id="pagination-controls"></div>
+            <div style="display:flex; justify-content:center; gap:10px; margin-top:50px; position:relative; z-index:2;" id="pagination-controls"></div>
         </div>
     </div>
 
@@ -347,7 +360,7 @@
     <div id="checkout" class="page">
         <div class="container" style="max-width:600px;">
             <h2 class="section-title">Checkout</h2>
-            <div style="background:var(--bg-card); padding:30px; border-radius:8px; box-shadow:var(--shadow);">
+            <div style="background:var(--bg-card); padding:30px; border-radius:8px; box-shadow:var(--shadow); position:relative; z-index:2;">
                 <form onsubmit="startPayment(event)">
                     <label style="display:block;margin-bottom:5px;font-weight:bold;">Full Name</label>
                     <input type="text" id="fname" required>
@@ -379,6 +392,10 @@
     <div id="about" class="page"><div class="container"><h2>About Us</h2><p>Thrift The Future is a sustainable fashion store.</p></div></div>
 
     <script>
+        // Watermark Populator
+        const wm = document.getElementById('watermarkContainer');
+        for(let i=0;i<60;i++){const s=document.createElement('span');s.className='watermark-text';s.innerText="PROTOTYPE";wm.appendChild(s);}
+
         // Data
         const imgs=["1591047139829-d91aecb6caea","1596755094514-f87e34085b2c","1556905055-8f358a7a47b2","1624378439575-d8705ad7ae80","1487222477894-8943e31ef7b2"];
         const products=[]; for(let i=1;i<=80;i++){products.push({id:i,t:`Vintage Item #${i}`,p:Math.floor(Math.random()*3500+500),i:`https://images.unsplash.com/photo-${imgs[i%5]}?q=80&w=600&auto=format&fit=crop`});}
@@ -391,6 +408,17 @@
         // Init
         document.getElementById('home-grid').innerHTML = products.slice(0,8).map(cardHTML).join('');
         renderShop(1);
+
+        // --- HISTORY API HANDLER (BACK BUTTON FIX) ---
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.page) {
+                // Navigate back without pushing a new state
+                showPage(event.state.page, false);
+            } else {
+                // Default to home if no state
+                showPage('home', false);
+            }
+        });
 
         function renderShop(pg){
             const start=(pg-1)*15, end=start+15;
@@ -437,14 +465,20 @@
         }
         function rmItem(i){cart.splice(i,1);updCart();}
 
-        // Nav
-        function showPage(id){
-            document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+        // Nav & Routing
+        function showPage(id, pushToHistory = true) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            window.scrollTo({top:0,behavior:'smooth'});
+            window.scrollTo({top: 0, behavior: 'smooth'});
             document.body.classList.remove('cart-active');
             document.getElementById('mobileMenu').classList.remove('open');
+
+            // Push state to history if navigation is new
+            if (pushToHistory) {
+                history.pushState({ page: id }, null, `#${id}`);
+            }
         }
+        
         function toggleCart(){document.body.classList.toggle('cart-active');}
         function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
         function mobileNav(pg){showPage(pg);}
@@ -471,6 +505,16 @@
                 },1500);
             },2000);
         }
+        
+        // Initial load check for hash
+        if(window.location.hash) {
+            const initialPage = window.location.hash.substring(1);
+            showPage(initialPage, false); // Don't push state on initial load if hash exists
+        } else {
+            // Push initial home state
+            history.replaceState({ page: 'home' }, null, '#home');
+        }
+
     </script>
 </body>
 </html>
